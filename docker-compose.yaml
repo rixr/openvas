@@ -5,19 +5,12 @@ services:
     image: greenbone/gvm:stable
     container_name: openvas
     restart: unless-stopped
-    ports:
-      - "9392:9392"   # Web UI (GSA)
-      - "5432:5432"   # PostgreSQL (interno, puedes quitarlo si no lo usas externamente)
+    network_mode: host
+    privileged: true
+    environment:
+      - PASSWORD=admin   # contraseña inicial usuario admin
     volumes:
       - gvm-data:/data
-    environment:
-      - PASSWORD=admin   # contraseña inicial para usuario "admin"
-    networks:
-      - gvm_net
 
 volumes:
   gvm-data:
-
-networks:
-  gvm_net:
-    driver: bridge
